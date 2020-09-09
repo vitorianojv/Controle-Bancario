@@ -1,2 +1,2 @@
-# projeto_controle_bancario
+# Projeto de Controle Bancário
  Projeto de controle bancário pessoal
