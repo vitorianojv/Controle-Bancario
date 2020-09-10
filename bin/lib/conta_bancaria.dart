@@ -1,6 +1,5 @@
 class ContaBancaria {
-  int numeroConta, agencia, operacao;
-  String nomeCorrentista;
+  int numeroConta, agencia;
   double saldoAtual;
   double saldoAbertura;
   double saldoChequeEspecial;

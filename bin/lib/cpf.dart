@@ -1,15 +1,14 @@
 import 'dart:io';
 
-import '../projeto_controle_bancario.dart';
-
-void main(List<String> args) {
+CPF() {
   var cpfList = List(11);
   int d1, d1r, d2, d2r;
   int somad1, somad2;
-  String cpf;
+  String cpf, c;
 
-  print("Digite seu CPF: ");
+  stdout.write("Digite seu CPF: ");
   cpf = stdin.readLineSync();
+  return c;
 
   // Atribuição dos índices do cpf para lista
   cpfList[0] = cpf[0];
@@ -39,7 +38,7 @@ void main(List<String> args) {
   cpfListd1[7] = int.parse(cpfList[7]) * 3;
   cpfListd1[8] = int.parse(cpfList[8]) * 2;
 
-  // Soma do resuldado da multiplicação dos índices da lista do primeiro dígito 
+  // Soma do resuldado da multiplicação dos índices da lista do primeiro dígito
   somad1 = cpfListd1[0] +
       cpfListd1[1] +
       cpfListd1[2] +
@@ -51,7 +50,7 @@ void main(List<String> args) {
       cpfListd1[8];
 
   var cpfListd2 = List(10);
-  
+
   // Multiplicação dos índices da lista do segundo dígito
   cpfListd2[0] = int.parse(cpfList[0]) * 11;
   cpfListd2[1] = int.parse(cpfList[1]) * 10;
@@ -64,8 +63,7 @@ void main(List<String> args) {
   cpfListd2[8] = int.parse(cpfList[8]) * 3;
   cpfListd2[9] = int.parse(cpfList[9]) * 2;
 
-  
-  // Soma do resuldado da multiplicação dos índices da lista do segundo dígito 
+  // Soma do resuldado da multiplicação dos índices da lista do segundo dígito
   somad2 = cpfListd2[0] +
       cpfListd2[1] +
       cpfListd2[2] +
@@ -99,27 +97,37 @@ void main(List<String> args) {
     print('Cpf Inválido!');
   }
 
-  // BlackList
-  if (cpf == "00000000000" ||
-      cpf == "11111111111" ||
-      cpf == "22222222222" ||
-      cpf == "33333333333" ||
-      cpf == "44444444444" ||
-      cpf == "55555555555" ||
-      cpf == "66666666666" ||
-      cpf == "77777777777" ||
-      cpf == "88888888888" ||
-      cpf == "99999999999") {
-    print("Cpf Inválido!");
+  if (cpf.length == 11 &&
+      d1r == int.parse(cpf[9]) &&
+      d2r == int.parse(cpf[10])) {
+    c = cpf;
   } else {
-    if (cpf.length == 11 &&
-        d1r == int.parse(cpf[9]) &&
-        d2r == int.parse(cpf[10])) {
-      print("Cpf Válido!");
-    } else {
-      print("Cpf Inválido");
-    }
+    stdout.write("Cpf Inválido!, Digite novamente:");
+    cpf = stdin.readLineSync();
+    return print("CPF não foi reconhecido!");
   }
-
-  return print('CPF Válido!');
 }
+
+// // BlackList
+// if (cpf == "00000000000" ||
+//     cpf == "11111111111" ||
+//     cpf == "22222222222" ||
+//     cpf == "33333333333" ||
+//     cpf == "44444444444" ||
+//     cpf == "55555555555" ||
+//     cpf == "66666666666" ||
+//     cpf == "77777777777" ||
+//     cpf == "88888888888" ||
+//     cpf == "99999999999") {
+//   print("Cpf Inválido!");
+// } else {
+//   if (cpf.length == 11 &&
+//       d1r == int.parse(cpf[9]) &&
+//       d2r == int.parse(cpf[10])) {
+//     print("Cpf Válido!");
+//   } else {
+//     print("Cpf Inválido");
+//   }
+// }
+
+// return print('CPF Válido!');

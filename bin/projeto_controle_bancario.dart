@@ -1,90 +1,54 @@
+import 'dart:developer';
 import 'dart:io';
+import 'lib/banco.dart';
+import 'lib/login.dart';
 import 'lib/conta_bancaria.dart';
+import 'lib/cpf.dart';
 
-// String cpfValidator() => 'lib/cpf.dart';
-
-void main(List<String> args) {
-
-  // Classe dos métodos (Sacar, Depositar e Cheque Especial)
+void main() {
   ContaBancaria cb = new ContaBancaria();
 
-  String op, op2, op3;
-  String tipoBanco, nome, senha, repSenha, banco;
-  int cpf;
+  String nome;
   String dataNasc;
+  String senha, repSenha;
+  String op, op2, op3;
 
-  // Cadastro do usuário
+  // // Cadastro do usuário
   print("\n----- Casdastre-se -----\n");
-
-  print("Digite seu nome completo: ");
+  stdout.write("Digite seu nome completo: ");
   nome = stdin.readLineSync();
 
-  print("Digite seu CPF: ");
-  cpf = int.parse(stdin.readLineSync());
-
-  print("Digite sua data de nascimento: ");
+  CPF();
+  
+  stdout.write("Digite sua data de nascimento: ");
   dataNasc = (stdin.readLineSync());
 
-  print("Digite sua senha: ");
+  stdout.write("Digite sua senha: ");
   senha = stdin.readLineSync();
 
-  print("Repita a senha ");
+  stdout.write("Repita a senha: ");
   repSenha = stdin.readLineSync();
 
-  // Login do usuário
+   print("\x1B[2J\x1B[0;0H");
+
   print("\n----- Login -----\n");
-  print("Entre na sua conta: ");
-  print("Digite seu CPF: ");
-  cpf = int.parse(stdin.readLineSync());
-  print("Digite sua senha: ");
-  senha = stdin.readLineSync();
+  Login();
 
-  // Escolha do banco
-  while (tipoBanco != "104" && tipoBanco != "033" && tipoBanco != "077") {
-    print(
-        "Informe o banco da sua conta: - [104] = Caixa | [033] = Santander | [077] = Inter ");
+   print("\x1B[2J\x1B[0;0H");
 
-    tipoBanco = (stdin.readLineSync());
-
-    if (tipoBanco == "104") {
-      print("\nCAIXA ");
-      banco = 'Caixa';
-    } else if (tipoBanco == "033") {
-      print("\nSANTANDER ");
-      banco = 'Santander';
-    } else if (tipoBanco == "077") {
-      print("\nInter ");
-      banco = 'Inter';
-    } else {
-      print("Opcção Inválida! Digite novamente: ");
-      tipoBanco = (stdin.readLineSync());
-    }
-  }
-
-  // Dados bancários
-  print("Informe o número da agência: ");
-  cb.agencia = int.parse(stdin.readLineSync());
-  print("");
-  print("Informe o número da operação: ");
-  cb.operacao = int.parse(stdin.readLineSync());
-  print("");
-  print("Informe o número da sua conta: ");
-  cb.numeroConta = int.parse(stdin.readLineSync());
-  print("");
-  print("Informe o saldo de abertura: ");
+  stdout.write("\nInforme o saldo de abertura: ");
   cb.saldoAbertura = double.parse(stdin.readLineSync());
-  print("");
+  print("\x1B[2J\x1B[0;0H");
+  // Escolha do Banco
+  Banco();
+  print("Saldo Atual: R\$${cb.saldoAbertura.toStringAsFixed(2).replaceAll('.', ',')}\n");
+  print("Nome do correntista: $nome\n");
+
   cb.saldoAtual = cb.saldoAbertura;
-
-  //Impressão dos dados bancários
-  print(
-      "Banco: ${banco} \nAgência: ${cb.agencia}\nOperação: ${cb.operacao}\nConta: ${cb.numeroConta}\nNome: ${nome}\nSaldo de abertura: R\$${cb.saldoAbertura}");
-
-  // Escolha do procedimento 
-  print(
-      "\nEscolha a opção desejada - [D] = Depósito | [S] = Saque | [CE] = Cheque Especial");
-
+  // // Escolha do procedimento
+  print("\nEscolha a opção desejada - [D] = Depósito | [S] = Saque | [CE] = Cheque Especial");
   op = stdin.readLineSync();
+  print("\x1B[2J\x1B[0;0H");
   cb.saldoAtual = cb.saldoAbertura;
   cb.limiteChequeEspecial = cb.saldoChequeEspecial;
 
@@ -98,47 +62,55 @@ void main(List<String> args) {
     print("Opção Inválida! Escolha novamente: ");
     op = stdin.readLineSync();
   }
-  //Depósito
+
+//Depósito
   if (op == "D" || op == 'd') {
     print("Informe o valor do depósito: ");
     valor = double.parse(stdin.readLineSync());
     cb.Depositar(valor);
-    print("\nSaldo Atual: R\$${cb.saldoAtual}\n");
+    print("\nSaldo Atual: R\$${cb.saldoAtual.toStringAsFixed(2).replaceAll('.', ',')}\n");
     print("\nDeseja fazer uma saque: - [S] = Sim | [N] = Não");
     op2 = stdin.readLineSync();
+    print("\x1B[2J\x1B[0;0H");
     // Saque após depósito
     if (op2 == "S" || op2 == "s") {
       print("\ninforme o valor do saque: ");
       valor = double.parse(stdin.readLineSync());
       valor > 9000
           ? print("Valor maior que o saldo")
-          : print("\nSaldo Atual: R\$${cb.SacarAposDeposito(valor)}\n");
+          : print(
+              "\nSaldo Atual: R\$${cb.SacarAposDeposito(valor).toStringAsFixed(2).replaceAll('.', ',')}\n");
     } else {
       print("Operação finalizada!");
     }
     // Saque
   } else if (op == "S" || op == "s") {
-      print("\ninforme o valor do saque: ");
-      valor = double.parse(stdin.readLineSync());
-      valor > cb.saldoAbertura
-          ? print("Valor maior que o saldo")
-          : print("\nSaldo Atual: R\$${cb.Sacar(valor)}\n");
+    print("\ninforme o valor do saque: ");
+    valor = double.parse(stdin.readLineSync());
+    valor > cb.saldoAbertura
+        ? print("Valor maior que o saldo")
+        : print(
+            "\nSaldo Atual: R\$${cb.Sacar(valor).toStringAsFixed(2).replaceAll('.', ',')}\n");
   }
-  
+
   cb.saldoChequeEspecial = cb.limiteChequeEspecial;
   cb.limiteChequeEspecial = cb.ChequeEspecial(valor);
 
-  // Cheque Especial
+// Cheque Especial
   if (op == "CE" || op == "ce") {
-    print("\nSaldo Cheque Especial: R\$${cb.ChequeEspecial(valor)}\n");
-    print("Limite Cheque Especial: R\$${cb.limiteChequeEspecial}\n");
+    print(
+        "\nSaldo Cheque Especial: R\$${cb.ChequeEspecial(valor).toStringAsFixed(2).replaceAll('.', ',')}\n");
+    print(
+        "Limite Cheque Especial: R\$${cb.limiteChequeEspecial.toStringAsFixed(2).replaceAll('.', ',')}\n");
     print("Deseja sacar? - [S] = Sim | [N] = Não");
     op3 = stdin.readLineSync();
+    print("\x1B[2J\x1B[0;0H");
     if (op3 == "S" || op3 == "s") {
       print("Informe do saque: ");
       valor = double.parse(stdin.readLineSync());
       cb.SacarCheque(valor);
-      print("\nSaldo Cheque Especial: R\$${cb.SacarCheque(valor)}\n");
+      print(
+          "\nSaldo Cheque Especial: R\$${cb.SacarCheque(valor).toStringAsFixed(2).replaceAll('.', ',')}\n");
     } else if (op3 == "N" || op3 == "n") {
       print("Operação finalizada!");
     }
